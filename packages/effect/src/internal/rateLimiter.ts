@@ -14,7 +14,7 @@ import * as Stream from "../Stream.js"
 import { nextPow2 } from "./nextPow2.js"
 
 /** @internal */
-export const make = (max: number, interval: DurationInput) => {
+export const make = (limit: number, window: DurationInput) => {
   return Effect.gen(function*($) {
     const q = yield* $(Queue.bounded<[Ref.Ref<boolean>, Effect.Effect<never, never, void>]>(nextPow2(max)))
 

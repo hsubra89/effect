@@ -14,5 +14,5 @@ export interface RateLimiter {
   <R, E, A>(task: Effect<R, E, A>): Effect<R, E, A>
 }
 
-export const make = (max: number, interval: Duration.DurationInput): Effect<Scope, never, RateLimiter> =>
+export const make = (limit: number, window: Duration.DurationInput): Effect<Scope, never, RateLimiter> =>
   internal.make(max, interval)
