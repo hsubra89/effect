@@ -16,7 +16,7 @@ import { nextPow2 } from "./nextPow2.js"
 /** @internal */
 export const make = (limit: number, window: DurationInput) => {
   return Effect.gen(function*($) {
-    const q = yield* $(Queue.bounded<[Ref.Ref<boolean>, Effect.Effect<never, never, void>]>(nextPow2(max)))
+    const q = yield* $(Queue.bounded<[Ref.Ref<boolean>, Effect.Effect<never, never, void>]>(nextPow2(limit)))
 
     yield* $(
       pipe(
@@ -29,9 +29,9 @@ export const make = (limit: number, window: DurationInput) => {
         }),
         Stream.throttle({
           strategy: "shape",
-          duration: interval,
+          duration: window,
           cost: Chunk.size,
-          units: max
+          units: limit
         }),
         Stream.mapEffect(([_interrupted, eff]) => eff, { concurrency: "unbounded", unordered: true }),
         Stream.runDrain,
